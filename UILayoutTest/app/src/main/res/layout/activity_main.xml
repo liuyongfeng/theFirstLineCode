@@ -7,25 +7,17 @@
     android:layout_height="match_parent"
     tools:context="com.example.administrator.uilayouttest.MainActivity">
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/input_message"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:text="Button1" />
+        android:layout_weight="1"
+        android:hint="Type something here"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:text="Button2" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="Button3" />
+        android:text="Send" />
 
 </LinearLayout>
