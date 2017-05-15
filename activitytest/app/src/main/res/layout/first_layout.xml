@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="显式Intent" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="隐式Intent" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="传递数据" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取下一个活动的返回结果" />
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="启动模式singleTop" />
+
+    <Button
+        android:id="@+id/singleTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="启动模式singleTask" />
+    <Button
+        android:id="@+id/singleInstance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="启动模式singleInstance" />
+</LinearLayout>
