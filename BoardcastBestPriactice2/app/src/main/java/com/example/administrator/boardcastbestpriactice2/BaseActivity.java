@@ -66,6 +66,7 @@ public class BaseActivity extends AppCompatActivity{
                     context.startActivity(intent1);
                 }
             });
+            builder.show();//不要忘记，否则不会弹出
         }
     }
 
