@@ -14,24 +14,27 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Manifest;
-
+//访问其他应用的内容提供器提供的内容：访问电话本的姓名和电话
 public class MainActivity extends AppCompatActivity {
 
-    ArrayAdapter adapter;
+    ArrayAdapter adapter;//定义一个listView的适配器
     List<String> contactsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //实例化一个listView
         ListView  contactsView = (ListView) findViewById(R.id.contacts_view);
+        //实例化一个适配器，适配器将contaactsList和listView关联起来
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,contactsList);
         contactsView.setAdapter(adapter);
-
+        //首先动态申请敏感权限，将会弹出权限框让用户确认
+        //注意：必须在AndroidManifest.xml中同步申明该权限：  <uses-permission android:name="android.permission.READ_CONTACTS"/>
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.READ_CONTACTS},1);
         }else{
-            readContacts();
+            readContacts();//从电话本获取姓名和电话号码信息
         }
     }
 
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                     contactsList.add(displayName + "\n" +number);
                 }
-                adapter.notifyDataSetChanged();
+               // adapter.notifyDataSetChanged();
             }
         }catch (Exception e){
             e.printStackTrace();
