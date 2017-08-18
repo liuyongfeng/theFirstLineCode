@@ -37,15 +37,18 @@ public class MyService extends Service {
     @Override
     public void onCreate(){
         super.onCreate();
-
+        //创建pendingIntent
+        Intent notificationIntent = new Intent(this,MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
         //创建通知
-        Notification notification = new Notification(drawable.ic_launcher,
-                "有通知到来", System.currentTimeMillis());
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                notificationIntent, 0);
-        notification.setLatestEventInfo(this, "这是通知的标题", "这是通知的内容",
-                pendingIntent);
+        Notification notification = new Notification.Builder(this)
+                .setContentTitle("From alex's mail")
+                .setContentText("创建一个前台Service")
+                .setSmallIcon(mipmap.ic_launcher)
+                .setContentIntent(pendingIntent)
+                .setDefaults(0)
+                .build();
+        //创建一个前台Service
         startForeground(1, notification);
         Log.d(TAG, "onCreate() executed");
         Log.d(TAG, "onCreate: MyService thread id is " + Thread.currentThread().getId());
