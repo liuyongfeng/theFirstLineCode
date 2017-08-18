@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 long [] vibrates = {0,1000,1000,1000};
                 builder.setVibrate(vibrates);
                 builder.setLights(Color.GREEN,1000,1000);
+                //builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(BitmapFactory.decodeResource(getResources(),R.drawable.big_image)));
                 //点击通知后自动消失
                // builder.setAutoCancel(true);
                 //发送通知
