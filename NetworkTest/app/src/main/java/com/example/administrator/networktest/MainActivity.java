@@ -1,5 +1,6 @@
 package com.example.administrator.networktest;
 
+import android.app.DownloadManager;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,12 +8,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     TextView responseText = null;
@@ -20,16 +30,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button send_request = (Button)findViewById(R.id.send_request);
-        responseText = (TextView)findViewById(R.id.response_text);
+        Button sendRequestWithHttpURLConnection = (Button)findViewById(R.id.sendRequestWithHttpURLConnection);
+        sendRequestWithHttpURLConnection.setOnClickListener(this);
 
-        send_request.setOnClickListener(this);
+        Button sendRequestWithOkHttp = (Button)findViewById(R.id.sendRequestWithOkHttp);
+        sendRequestWithOkHttp.setOnClickListener(this);
+        responseText = (TextView)findViewById(R.id.response_text);
     }
 
     @Override
     public void onClick(View v){
-        if (v.getId() == R.id.send_request){
-            sendRequestWithHttpURLConnection();
+        switch (v.getId()){
+            case R.id.sendRequestWithHttpURLConnection:
+                sendRequestWithHttpURLConnection();
+                break;
+            case R.id.sendRequestWithOkHttp:
+                sendRequestWithOkHttp();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void sendRequestWithOkHttp(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient okHttpClient = new OkHttpClient();
+                Request request = new Request.Builder()
+                        .url("http://127.0.0.1/get_data.xml")//apache server
+                        .build();
+                try{
+                    Response response = okHttpClient.newCall(request).execute();
+                    String responseData = response.body().toString();
+                    showResponse(responseData);
+                    parseXMLWithPull(responseData);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void parseXMLWithPull(String xmlData) {
+        try{
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            XmlPullParser xmlPullParser = factory.newPullParser();
+            xmlPullParser.setInput(new StringReader(xmlData));
+            int eventType = xmlPullParser.getEventType();
+            String id = "";
+            String name = "";
+            String version = "";
+            while (eventType != XmlPullParser.END_DOCUMENT){
+                
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
