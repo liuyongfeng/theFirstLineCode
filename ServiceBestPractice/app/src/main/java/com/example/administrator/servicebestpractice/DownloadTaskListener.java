@@ -3,10 +3,11 @@ package com.example.administrator.servicebestpractice;
 /**
  * Created by Administrator on 2017/8/21.
  */
-//定义五个回调方法
-public interface DownloadListener {
+
+public interface DownloadTaskListener {
+
     //通知当前的下载进度
-    void onPorgress(int progress);
+    void onProgress(int progress);
 
     //通知下载成功事件
     void onSuccess();

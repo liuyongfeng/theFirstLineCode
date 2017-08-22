@@ -43,3 +43,15 @@
 [Mon Aug 21 19:41:49.587275 2017] [ssl:warn] [pid 1976:tid 156] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
 [Mon Aug 21 19:41:49.727675 2017] [ssl:warn] [pid 1976:tid 156] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
 [Mon Aug 21 19:41:49.727675 2017] [mpm_winnt:notice] [pid 1976:tid 156] AH00354: Child: Starting 64 worker threads.
+[Tue Aug 22 00:31:38.451888 2017] [mpm_winnt:notice] [pid 1824:tid 272] AH00422: Parent: Received shutdown signal -- Shutting down the server.
+[Tue Aug 22 00:31:40.479892 2017] [mpm_winnt:notice] [pid 1976:tid 156] AH00364: Child: All worker threads have exited.
+[Tue Aug 22 00:31:40.495492 2017] [mpm_winnt:notice] [pid 1824:tid 272] AH00430: Parent: Child process 1976 exited successfully.
+[Tue Aug 22 23:10:29.954067 2017] [ssl:warn] [pid 1836:tid 272] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Tue Aug 22 23:10:30.110067 2017] [ssl:warn] [pid 1836:tid 272] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Tue Aug 22 23:10:30.110067 2017] [mpm_winnt:notice] [pid 1836:tid 272] AH00455: Apache/2.4.27 (Win64) OpenSSL/1.0.2l configured -- resuming normal operations
+[Tue Aug 22 23:10:30.141267 2017] [mpm_winnt:notice] [pid 1836:tid 272] AH00456: Server built: Jul  8 2017 16:32:10
+[Tue Aug 22 23:10:30.141267 2017] [core:notice] [pid 1836:tid 272] AH00094: Command line: 'D:\\mywork\\theFirstLineCode\\apache_web_server\\Apache24\\bin\\httpd.exe -d D:/mywork/theFirstLineCode/apache_web_server/Apache24'
+[Tue Aug 22 23:10:30.141267 2017] [mpm_winnt:notice] [pid 1836:tid 272] AH00418: Parent: Created child process 1988
+[Tue Aug 22 23:10:30.921269 2017] [ssl:warn] [pid 1988:tid 156] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Tue Aug 22 23:10:31.046069 2017] [ssl:warn] [pid 1988:tid 156] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Tue Aug 22 23:10:31.046069 2017] [mpm_winnt:notice] [pid 1988:tid 156] AH00354: Child: Starting 64 worker threads.
