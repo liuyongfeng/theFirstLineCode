@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (downloadBinder == null){
             return;
         }
-        String url = "";
+        String url = "https://raw.githubusercontent.com/guolindev/eclipse/master/eclipse-inst-win64.exe";
         switch (view.getId()){
             case R.id.start_download:
                 downloadBinder.startDownload(url);

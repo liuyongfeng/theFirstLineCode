@@ -33,7 +33,7 @@ public class DownloadTask extends AsyncTask<String, Integer, Integer> {
     private boolean isPaused = false;
     private int lastProgress;
 
-    private DownloadTask(DownloadTaskListener listener) {
+    DownloadTask(DownloadTaskListener listener) {
         this.listener = listener;
     }
 

@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 builder.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher));
                 builder.setContentIntent(pi);
                 //通知声音
-                builder.setDefaults(NotificationCompat.DEFAULT_ALL)
+                builder.setDefaults(NotificationCompat.DEFAULT_ALL);
                 //振动、呼吸灯提醒
                 long [] vibrates = {0,1000,1000,1000};
                 builder.setVibrate(vibrates);

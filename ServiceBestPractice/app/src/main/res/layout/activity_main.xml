@@ -8,16 +8,19 @@
         android:id="@+id/start_download"
         android:textAllCaps="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="start_download" />
     <Button
         android:id="@+id/pause_download"
         android:textAllCaps="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="pause_download"/>
     <Button
         android:id="@+id/cancel_download"
         android:textAllCaps="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="cancel_download"/>
 
 </LinearLayout>
