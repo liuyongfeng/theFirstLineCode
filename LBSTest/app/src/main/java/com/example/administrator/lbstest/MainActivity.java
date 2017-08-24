@@ -16,7 +16,11 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,25 +33,8 @@ public class MainActivity extends AppCompatActivity {
     public LocationClient mLocationClient;
     private TextView positionText;
     private MapView mapView;
-
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        mLocationClient.stop();
-        mapView.onDestroy();
-    }
-
-    @Override
-    protected void onPause(){
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        mapView.onResume();
-    }
+    private boolean isFistLocate = true;
+    private BaiduMap baiduMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         SDKInitializer.initialize(getApplicationContext());//初始化一定要放在setContentView之前做
         setContentView(R.layout.activity_main);
         mapView = (MapView)findViewById(R.id.bmapView);//显示地图
+        baiduMap = mapView.getMap();
+        
+
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(new MyLocationListener());
         positionText = (TextView)findViewById(R.id.position_text_view);
@@ -95,6 +85,23 @@ public class MainActivity extends AppCompatActivity {
         option.setIsNeedAddress(true);//获取地理位置
         mLocationClient.setLocOption(option);
     }
+    /*
+    移动到我的位置
+     */
+    private void navigateTo(BDLocation location){
+        Log.d(TAG, "navigateTo: isFistLocate = " + isFistLocate);
+        if (isFistLocate){
+            Log.d(TAG, "navigateTo: " + location.getLatitude() + location.getLongitude());
+            //地图移动到到我所在的位置
+            LatLng ll = new LatLng(location.getLatitude(),location.getLongitude());
+            MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(ll);
+            baiduMap.animateMapStatus(update);
+            //地图缩放
+            update = MapStatusUpdateFactory.zoomTo(16f);
+            baiduMap.animateMapStatus(update);
+            isFistLocate = false;
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,String[] permissions,
@@ -123,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
     public class MyLocationListener implements BDLocationListener{
         @Override
         public void onReceiveLocation(BDLocation location){
+            Log.d(TAG, "onReceiveLocation: ");
             StringBuilder currentPosition = new StringBuilder();
             currentPosition.append("纬度:").append(location.getLatitude()).append("\n");
             currentPosition.append("经度:").append(location.getLongitude()).append("\n");
@@ -137,7 +145,27 @@ public class MainActivity extends AppCompatActivity {
             }else if(location.getLocType() == BDLocation.TypeNetWorkLocation){
                 currentPosition.append("网络").append("\n");
             }
+            Log.d(TAG, "onReceiveLocation: " + currentPosition);
             positionText.setText(currentPosition);
+            navigateTo(location);
         }
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        mLocationClient.stop();
+        mapView.onDestroy();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        mapView.onResume();
     }
 }
