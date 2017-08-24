@@ -20,6 +20,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mapView = (MapView)findViewById(R.id.bmapView);//显示地图
         baiduMap = mapView.getMap();
-        
+        baiduMap.setMyLocationEnabled(true);
 
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(new MyLocationListener());
@@ -101,6 +102,12 @@ public class MainActivity extends AppCompatActivity {
             baiduMap.animateMapStatus(update);
             isFistLocate = false;
         }
+        //将“我”显示到地图上
+        MyLocationData.Builder locationBuilder = new MyLocationData.Builder();
+        locationBuilder.latitude(location.getLatitude());
+        locationBuilder.longitude(location.getLongitude());
+        MyLocationData locationData = locationBuilder.build();
+        baiduMap.setMyLocationData(locationData);
     }
 
     @Override
@@ -155,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         mLocationClient.stop();
         mapView.onDestroy();
+        baiduMap.setMyLocationEnabled(false);
     }
 
     @Override
