@@ -17,6 +17,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -94,11 +95,12 @@ public class MainActivity extends AppCompatActivity {
         if (isFistLocate){
             Log.d(TAG, "navigateTo: " + location.getLatitude() + location.getLongitude());
             //地图移动到到我所在的位置
-            LatLng ll = new LatLng(location.getLatitude(),location.getLongitude());
-            MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(ll);
-            baiduMap.animateMapStatus(update);
-            //地图缩放
-            update = MapStatusUpdateFactory.zoomTo(16f);
+            LatLng center_point = new LatLng(location.getLatitude(),location.getLongitude());
+            MapStatus mMapStatus = new MapStatus.Builder()
+                    .target(center_point)
+                    .zoom(16f)
+                    .build();
+            MapStatusUpdate update = MapStatusUpdateFactory.newMapStatus(mMapStatus);
             baiduMap.animateMapStatus(update);
             isFistLocate = false;
         }
