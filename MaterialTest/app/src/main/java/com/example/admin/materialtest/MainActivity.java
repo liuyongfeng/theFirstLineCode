@@ -1,5 +1,6 @@
 package com.example.admin.materialtest;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,9 +10,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private DrawerLayout mDrawerLayout;
 
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
+        //导航页
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -35,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        //悬浮按钮
+        FloatingActionButton buttonFab = (FloatingActionButton)findViewById(R.id.fab);
+        buttonFab.setOnClickListener(this);
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
@@ -62,5 +69,16 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.fab:
+                Toast.makeText(this,"fab clicked",Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
     }
 }
