@@ -8,6 +8,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,9 +17,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private DrawerLayout mDrawerLayout;
+    private fruit[] fruits = {
+            new fruit("apple",R.drawable.apple),
+            new fruit("fruits",R.drawable.fruits),
+            new fruit("kiwifruit",R.drawable.kiwifruit),
+            new fruit("orange",R.drawable.orange),
+            new fruit("pomegranate",R.drawable.pomegranate),
+            new fruit("strawberry",R.drawable.strawberry),
+    };
+
+    private List<fruit> fruitList = new ArrayList<>();
+    private FruitAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +60,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //悬浮按钮
         FloatingActionButton buttonFab = (FloatingActionButton)findViewById(R.id.fab);
         buttonFab.setOnClickListener(this);
+
+        //显示水果图片
+        initFruits();
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new FruitAdapter(fruitList);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void initFruits(){
+        fruitList.clear();
+        for (int i=0; i<50; i++){
+            Random random = new Random();
+            int index = random.nextInt(fruits.length);
+            fruitList.add(fruits[index]);
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
