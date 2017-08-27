@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,Runnable {
 
     private DrawerLayout mDrawerLayout;
     private fruit[] fruits = {
@@ -60,8 +60,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //悬浮按钮
         FloatingActionButton buttonFab = (FloatingActionButton)findViewById(R.id.fab);
         buttonFab.setOnClickListener(this);
-
+        Thread thread=new Thread(this);
+        thread.start();
         //显示水果图片
+     }
+    @Override
+    public void run() {
         initFruits();
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(this,2);
