@@ -2,6 +2,7 @@ package com.example.admin.materialtest;
 
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -75,7 +76,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view){
         switch (view.getId()){
             case R.id.fab:
-                Toast.makeText(this,"fab clicked",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this,"fab clicked",Toast.LENGTH_SHORT).show();
+                Snackbar.make(view,"Critical data deleted",Snackbar.LENGTH_SHORT)
+                        .setAction("Undo",new View.OnClickListener(){
+                            @Override
+                            public void onClick(View v){
+                            Toast.makeText(MainActivity.this,"Data Restored",
+                                        Toast.LENGTH_SHORT).show();
+                             }
+                }).show();
                 break;
             default:
                 break;
