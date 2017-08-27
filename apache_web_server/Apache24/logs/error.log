@@ -19,3 +19,27 @@
 [Fri Aug 25 01:21:39.734451 2017] [ssl:warn] [pid 2000:tid 156] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
 [Fri Aug 25 01:21:39.859251 2017] [ssl:warn] [pid 2000:tid 156] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
 [Fri Aug 25 01:21:39.874851 2017] [mpm_winnt:notice] [pid 2000:tid 156] AH00354: Child: Starting 64 worker threads.
+[Fri Aug 25 01:29:17.176411 2017] [mpm_winnt:notice] [pid 1864:tid 272] AH00422: Parent: Received shutdown signal -- Shutting down the server.
+[Fri Aug 25 01:29:19.204415 2017] [mpm_winnt:notice] [pid 2000:tid 156] AH00364: Child: All worker threads have exited.
+[Fri Aug 25 01:29:19.220015 2017] [mpm_winnt:notice] [pid 1864:tid 272] AH00430: Parent: Child process 2000 exited successfully.
+[Sat Aug 26 11:29:51.473663 2017] [ssl:warn] [pid 1836:tid 272] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Sat Aug 26 11:29:51.629663 2017] [ssl:warn] [pid 1836:tid 272] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Sat Aug 26 11:29:51.629663 2017] [mpm_winnt:notice] [pid 1836:tid 272] AH00455: Apache/2.4.27 (Win64) OpenSSL/1.0.2l configured -- resuming normal operations
+[Sat Aug 26 11:29:51.660863 2017] [mpm_winnt:notice] [pid 1836:tid 272] AH00456: Server built: Jul  8 2017 16:32:10
+[Sat Aug 26 11:29:51.660863 2017] [core:notice] [pid 1836:tid 272] AH00094: Command line: 'D:\\mywork\\theFirstLineCode\\apache_web_server\\Apache24\\bin\\httpd.exe -d D:/mywork/theFirstLineCode/apache_web_server/Apache24'
+[Sat Aug 26 11:29:51.660863 2017] [mpm_winnt:notice] [pid 1836:tid 272] AH00418: Parent: Created child process 1968
+[Sat Aug 26 11:29:52.425264 2017] [ssl:warn] [pid 1968:tid 156] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Sat Aug 26 11:29:52.565665 2017] [ssl:warn] [pid 1968:tid 156] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Sat Aug 26 11:29:52.565665 2017] [mpm_winnt:notice] [pid 1968:tid 156] AH00354: Child: Starting 64 worker threads.
+[Sat Aug 26 23:53:46.492096 2017] [mpm_winnt:notice] [pid 1836:tid 272] AH00422: Parent: Received shutdown signal -- Shutting down the server.
+[Sat Aug 26 23:53:48.878901 2017] [mpm_winnt:notice] [pid 1968:tid 156] AH00364: Child: All worker threads have exited.
+[Sat Aug 26 23:53:52.123706 2017] [mpm_winnt:notice] [pid 1836:tid 272] AH00430: Parent: Child process 1968 exited successfully.
+[Sun Aug 27 14:08:08.657667 2017] [ssl:warn] [pid 1780:tid 272] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Sun Aug 27 14:08:08.813667 2017] [ssl:warn] [pid 1780:tid 272] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Sun Aug 27 14:08:08.813667 2017] [mpm_winnt:notice] [pid 1780:tid 272] AH00455: Apache/2.4.27 (Win64) OpenSSL/1.0.2l configured -- resuming normal operations
+[Sun Aug 27 14:08:08.844867 2017] [mpm_winnt:notice] [pid 1780:tid 272] AH00456: Server built: Jul  8 2017 16:32:10
+[Sun Aug 27 14:08:08.844867 2017] [core:notice] [pid 1780:tid 272] AH00094: Command line: 'D:\\mywork\\theFirstLineCode\\apache_web_server\\Apache24\\bin\\httpd.exe -d D:/mywork/theFirstLineCode/apache_web_server/Apache24'
+[Sun Aug 27 14:08:08.844867 2017] [mpm_winnt:notice] [pid 1780:tid 272] AH00418: Parent: Created child process 1868
+[Sun Aug 27 14:08:09.671668 2017] [ssl:warn] [pid 1868:tid 156] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Sun Aug 27 14:08:09.796469 2017] [ssl:warn] [pid 1868:tid 156] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Sun Aug 27 14:08:09.796469 2017] [mpm_winnt:notice] [pid 1868:tid 156] AH00354: Child: Starting 64 worker threads.
