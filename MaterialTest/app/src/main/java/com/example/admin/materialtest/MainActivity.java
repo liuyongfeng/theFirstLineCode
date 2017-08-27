@@ -5,6 +5,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,Runnable {
 
     private DrawerLayout mDrawerLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     private fruit[] fruits = {
             new fruit("apple",R.drawable.apple),
             new fruit("fruits",R.drawable.fruits),
@@ -60,10 +63,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //悬浮按钮
         FloatingActionButton buttonFab = (FloatingActionButton)findViewById(R.id.fab);
         buttonFab.setOnClickListener(this);
+        //显示水果图片
         Thread thread=new Thread(this);
         thread.start();
-        //显示水果图片
+        //刷新
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.
+                OnRefreshListener(){
+            @Override
+            public void onRefresh(){
+                refreshFruites();
+            }
+        });
      }
+    private void refreshFruites(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Thread.sleep(2000);
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initFruits();
+                        adapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+            }
+        }).start();
+    }
+
+
     @Override
     public void run() {
         initFruits();
