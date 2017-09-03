@@ -212,14 +212,17 @@ public class ChooseAreaFragment extends Fragment {
                     result = Utility.handleCountryResponse(responseText, selectedCity.getCityCode());
                 }
 
-                if (result) {
+                if (!result) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             closeProgressDialog();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                Toast.makeText(getContext(),"Load Failed",
-                                        Toast.LENGTH_SHORT).show();
+                            if ("province".equals(type)) {
+                                queryProvinces();
+                            } else if ("city".equals(type)) {
+                                queryCities();
+                            } else if ("county".equals(type)) {
+                                queryCounties();
                             }
                         }
                     });

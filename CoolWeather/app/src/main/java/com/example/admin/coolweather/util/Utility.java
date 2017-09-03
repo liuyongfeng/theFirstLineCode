@@ -57,7 +57,7 @@ public class Utility {
                     city.setCityName(cityObject.getString("name"));
                     city.setProvinceId(provinceId);
                     city.save();
-                    Log.d(TAG, "handProvinceResponse: " + " id = " + cityObject.getInt("id") + " name= " + cityObject.getString("name"));
+                    Log.d(TAG, "handleCityResponse: " + " id = " + cityObject.getInt("id") + " name= " + cityObject.getString("name"));
 
                 }
                 return true;
@@ -81,7 +81,7 @@ public class Utility {
                     county.setWeatherId(countyObject.getString("weather_id"));
                     county.setCityId(cityId);
                     county.save();
-                    Log.d(TAG, "handProvinceResponse: " + " id = " + countyObject.getInt("id") + " name= " + countyObject.getString("name"));
+                    Log.d(TAG, "handleCountryResponse: " + " id = " + countyObject.getInt("id") + " name= " + countyObject.getString("name"));
                 }
                 return true;
             }catch (Exception e){
