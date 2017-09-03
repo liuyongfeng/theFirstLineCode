@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Suggestion {
     @SerializedName("comf")
-    public Confort comf;
+    public Comfort comf;
 
     @SerializedName("cw")
     public Cw cw;
@@ -16,7 +16,7 @@ public class Suggestion {
     @SerializedName("sport")
     public Sport sport;
 
-    class Confort {
+    class Comfort {
         @SerializedName("txt")
         public String info;
     }

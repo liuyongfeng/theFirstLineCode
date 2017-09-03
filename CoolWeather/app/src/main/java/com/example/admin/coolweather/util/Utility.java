@@ -1,9 +1,10 @@
 package com.example.admin.coolweather.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.admin.coolweather.db.City;
-import com.example.admin.coolweather.db.Country;
+import com.example.admin.coolweather.db.County;
 import com.example.admin.coolweather.db.Province;
 import com.example.admin.coolweather.gson.Weather;
 import com.google.gson.Gson;
@@ -11,14 +12,13 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.security.Provider;
-
 /**
  * Created by admin on 2017-8-29.
  * 解析全国省市县数据,
  */
 
 public class Utility {
+    private static final String TAG = "Utility";
     /**
      * 解析服务器返回的省级数据,http://guolin.tech/api/china
      */
@@ -32,6 +32,7 @@ public class Utility {
                     province.setProvinceCode(provinceObject.getInt("id"));
                     province.setProvinceName(provinceObject.getString("name"));
                     province.save();
+                    Log.d(TAG, "handProvinceResponse: " + " id = " + provinceObject.getInt("id") + " name= " + provinceObject.getString("name"));
                 }
                 return true;
             }catch (Exception e){
@@ -54,8 +55,10 @@ public class Utility {
                     City city = new City();
                     city.setCityCode(cityObject.getInt("id"));
                     city.setCityName(cityObject.getString("name"));
-                    city.setProvinceCode(provinceId);
+                    city.setProvinceId(provinceId);
                     city.save();
+                    Log.d(TAG, "handProvinceResponse: " + " id = " + cityObject.getInt("id") + " name= " + cityObject.getString("name"));
+
                 }
                 return true;
             }catch (Exception e){
@@ -70,14 +73,15 @@ public class Utility {
     public static boolean handleCountryResponse(String response,int cityId){
         if (!TextUtils.isEmpty(response)){
             try{
-                JSONArray allCountry = new JSONArray(response);
-                for (int i=0; i<allCountry.length(); i++){
-                    JSONObject countryObject = allCountry.getJSONObject(i);
-                    Country country = new Country();
-                    country.setCountryCode(countryObject.getInt("id"));
-                    country.setCountryName(countryObject.getString("name"));
-                    country.setCityCode(cityId);
-                    country.save();
+                JSONArray allCounties = new JSONArray(response);
+                for (int i=0; i<allCounties.length(); i++){
+                    JSONObject countyObject = allCounties.getJSONObject(i);
+                    County county = new County();
+                    county.setCountyName(countyObject.getString("name"));
+                    county.setWeatherId(countyObject.getString("weather_id"));
+                    county.setCityId(cityId);
+                    county.save();
+                    Log.d(TAG, "handProvinceResponse: " + " id = " + countyObject.getInt("id") + " name= " + countyObject.getString("name"));
                 }
                 return true;
             }catch (Exception e){
