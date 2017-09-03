@@ -145,6 +145,7 @@ public class ChooseAreaFragment extends Fragment {
         titleText.setText(selectedProvince.getProvinceName());
         backButton.setVisibility(View.VISIBLE);
         cityList = DataSupport.where("provinceid = ?",String.valueOf(selectedProvince.getId())).find(City.class);
+        Log.d(TAG, "queryCities: cityList.size() = " + cityList.size());
         if(cityList.size() > 0){
             dataList.clear();//修复list内容不更新的问题
            for (City city : cityList){
@@ -160,11 +161,22 @@ public class ChooseAreaFragment extends Fragment {
             queryFromServer(address,"city");
         }
     }
+/*
+sqlite> .schema
+CREATE TABLE android_metadata (locale TEXT);
+CREATE TABLE table_schema (id integer primary key autoincrement,name text, type integer);
+CREATE TABLE province (id integer primary key autoincrement,provincecode integer, provincename text);
+CREATE TABLE city (id integer primary key autoincrement,citycode integer, cityname text, provinceidinteger);
+CREATE TABLE county (id integer primary key autoincrement,cityid integer, countyname text, weatherid text);
+sqlite>
+* */
 
     public void queryCounties() {
         titleText.setText(selectedCity.getCityName());
         backButton.setVisibility(View.VISIBLE);
         countyList = DataSupport.where("cityid = ?",String.valueOf(selectedCity.getId())).find(County.class);
+        Log.d(TAG, "queryCounties: countyList.size() = " + countyList.size() + "selectedCity.getId() = " + selectedCity.getId());
+        // countyList.size() = 0 导致死循环
         if(countyList.size() > 0){
             dataList.clear();//修复list内容不更新的问题
             for (County country : countyList){
@@ -174,7 +186,9 @@ public class ChooseAreaFragment extends Fragment {
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
             currentLevel = LEVEL_COUNTY;
+            Log.d(TAG, "queryCounties: currentLevel = " + currentLevel);
         }else{
+            Log.d(TAG, "queryCounties: get from server");
             int provinceCode = selectedProvince.getProvinceCode();
             int cityCode = selectedCity.getCityCode();
             String address = "http://guolin.tech/api/china/"
@@ -212,7 +226,7 @@ public class ChooseAreaFragment extends Fragment {
                     result = Utility.handleCountryResponse(responseText, selectedCity.getCityCode());
                 }
 
-                if (!result) {
+                if (result) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

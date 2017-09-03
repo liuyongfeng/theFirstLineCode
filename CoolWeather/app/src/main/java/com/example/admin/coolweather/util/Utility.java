@@ -74,7 +74,9 @@ public class Utility {
         if (!TextUtils.isEmpty(response)){
             try{
                 JSONArray allCounties = new JSONArray(response);
+                Log.d(TAG, "handleCountryResponse: " + allCounties.length());
                 for (int i=0; i<allCounties.length(); i++){
+                    Log.d(TAG, "handleCountryResponse: i= " + i);
                     JSONObject countyObject = allCounties.getJSONObject(i);
                     County county = new County();
                     county.setCountyName(countyObject.getString("name"));
