@@ -10,6 +10,7 @@ import com.example.admin.coolweather.gson.Weather;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -20,22 +21,22 @@ import org.json.JSONObject;
 public class Utility {
     private static final String TAG = "Utility";
     /**
-     * 解析服务器返回的省级数据,http://guolin.tech/api/china
+     * 解析和处理服务器返回的省级数据
      */
-    public static boolean handProvinceResponse(String response){
-        if (!TextUtils.isEmpty(response)){
+    public static boolean handleProvinceResponse(String response) {
+        if (!TextUtils.isEmpty(response)) {
             try {
-                JSONArray allProvince = new JSONArray(response);
-                for (int i=0; i<allProvince.length(); i++){
-                    JSONObject provinceObject = allProvince.getJSONObject(i);
+                JSONArray allProvinces = new JSONArray(response);
+                for (int i = 0; i < allProvinces.length(); i++) {
+                    JSONObject provinceObject = allProvinces.getJSONObject(i);
                     Province province = new Province();
-                    province.setProvinceCode(provinceObject.getInt("id"));
                     province.setProvinceName(provinceObject.getString("name"));
+                    province.setProvinceCode(provinceObject.getInt("id"));
                     province.save();
                     Log.d(TAG, "handProvinceResponse: " + " id = " + provinceObject.getInt("id") + " name= " + provinceObject.getString("name"));
                 }
                 return true;
-            }catch (Exception e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -53,15 +54,15 @@ public class Utility {
                 for (int i=0; i<allCities.length(); i++){
                     JSONObject cityObject = allCities.getJSONObject(i);
                     City city = new City();
-                    city.setCityCode(cityObject.getInt("id"));
                     city.setCityName(cityObject.getString("name"));
+                    city.setCityCode(cityObject.getInt("id"));
                     city.setProvinceId(provinceId);
                     city.save();
                     Log.d(TAG, "handleCityResponse: " + " id = " + cityObject.getInt("id") + " name= " + cityObject.getString("name"));
 
                 }
                 return true;
-            }catch (Exception e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -70,23 +71,27 @@ public class Utility {
     /**
      * 解析服务器返回的所有县
      */
-    public static boolean handleCountryResponse(String response,int cityId){
+    public static boolean handleCountyResponse(String response,int cityId){
         if (!TextUtils.isEmpty(response)){
             try{
                 JSONArray allCounties = new JSONArray(response);
                 Log.d(TAG, "handleCountryResponse: " + allCounties.length());
                 for (int i=0; i<allCounties.length(); i++){
-                    Log.d(TAG, "handleCountryResponse: i= " + i);
-                    JSONObject countyObject = allCounties.getJSONObject(i);
-                    County county = new County();
-                    county.setCountyName(countyObject.getString("name"));
-                    county.setWeatherId(countyObject.getString("weather_id"));
-                    county.setCityId(cityId);
-                    county.save();
+                        Log.d(TAG, "handleCountryResponse: i= " + i);
+                        JSONObject countyObject = allCounties.getJSONObject(i);
+                        County county = new County();
+                        county.setCountyName(countyObject.getString("name"));
+                        county.setWeatherId(countyObject.getString("weather_id"));
+                        county.setCityId(cityId);
+                        if (county.save()){
+                        Log.d(TAG, "handleCountyResponse: county.save success");
+                    }else{
+                        Log.d(TAG, "handleCountyResponse: county.save failed");
+                    }
                     Log.d(TAG, "handleCountryResponse: " + " id = " + countyObject.getInt("id") + " name= " + countyObject.getString("name"));
                 }
                 return true;
-            }catch (Exception e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }

@@ -122,7 +122,7 @@ public class WeatherActivity extends AppCompatActivity {
             dateText.setText(forecast.date);
             info.setText(forecast.date);
             maxText.setText(forecast.temperature.max);
-            maxText.setText(forecast.temperature.min);
+            minText.setText(forecast.temperature.min);
             forecastLayout.addView(view);
         }
 
@@ -131,8 +131,8 @@ public class WeatherActivity extends AppCompatActivity {
             pm25Text.setText(weather.aqi.city.pm25);
         }
 
-        String comfort = "舒适度：" + weather.suggestion.comf;
-        String carWash = "洗车指数：" + weather.suggestion.cw;
+        String comfort = "舒适度：" + weather.suggestion.comfort;
+        String carWash = "洗车指数：" + weather.suggestion.carWash;
         String sport = "运动指数：" + weather.suggestion.sport;
 
         comfortText.setText(comfort);

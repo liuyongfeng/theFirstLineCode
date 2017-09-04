@@ -60,10 +60,9 @@ public class ChooseAreaFragment extends Fragment {
     private Province selectedProvince;
     /*选中的市*/
     private City selectedCity;
-    /*选中的县*/
-    private Province selectedCounty;
+
     /*当前选中的级别*/
-    private int currentLevel = LEVEL_PROVINCE;
+    private int currentLevel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
@@ -81,6 +80,7 @@ public class ChooseAreaFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d(TAG, "onActivityCreated(1): currentLevel = " + currentLevel);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -112,20 +112,24 @@ public class ChooseAreaFragment extends Fragment {
                 if (currentLevel == LEVEL_COUNTY) {
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
-                    queryCounties();
+                    queryProvinces();
                 }
             }
         });
+        Log.d(TAG, "onActivityCreated(2): currentLevel = " + currentLevel);
         queryProvinces();
     }
 
-
-    public void queryProvinces() {
+    /**
+     * 查询全国所有的省，优先从数据库查询，如果没有查询到再去服务器上查询。
+     */
+    private void queryProvinces() {
         titleText.setText("中国");
         backButton.setVisibility(View.GONE);
 
         /*try to get provinces form database*/
         provinceList = DataSupport.findAll(Province.class);
+        Log.d(TAG, "queryProvinces: provinceList.size() = " + provinceList.size());
         if (provinceList.size() > 0) {
             dataList.clear();
             for (Province province : provinceList) {
@@ -141,7 +145,10 @@ public class ChooseAreaFragment extends Fragment {
         }
     }
 
-    public void queryCities() {
+    /**
+     * 查询选中省内所有的市，优先从数据库查询，如果没有查询到再去服务器上查询。
+     */
+    private void queryCities() {
         titleText.setText(selectedProvince.getProvinceName());
         backButton.setVisibility(View.VISIBLE);
         cityList = DataSupport.where("provinceid = ?",String.valueOf(selectedProvince.getId())).find(City.class);
@@ -171,34 +178,37 @@ CREATE TABLE county (id integer primary key autoincrement,cityid integer, county
 sqlite>
 * */
 
-    public void queryCounties() {
+    private void queryCounties() {
         titleText.setText(selectedCity.getCityName());
         backButton.setVisibility(View.VISIBLE);
         countyList = DataSupport.where("cityid = ?",String.valueOf(selectedCity.getId())).find(County.class);
         Log.d(TAG, "queryCounties: countyList.size() = " + countyList.size() + "selectedCity.getId() = " + selectedCity.getId());
         // countyList.size() = 0 导致死循环
-        if(countyList.size() > 0){
+        Log.d(TAG, "queryCounties: countyList.isEmpty() = " + countyList.isEmpty());
+        if(!countyList.isEmpty()){
             dataList.clear();//修复list内容不更新的问题
-            for (County country : countyList){
-                dataList.add(country.getCountyName());
-                Log.d(TAG, "queryCounties: " + country.getCountyName());
+            for (County county : countyList){
+                dataList.add(county.getCountyName());
+                Log.d(TAG, "queryCounties: " + county.getCountyName());
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
             currentLevel = LEVEL_COUNTY;
             Log.d(TAG, "queryCounties: currentLevel = " + currentLevel);
         }else{
-            Log.d(TAG, "queryCounties: get from server");
+            Log.d(TAG, "queryCounties: get from server" + selectedProvince.getProvinceName() + selectedCity.getCityName());
             int provinceCode = selectedProvince.getProvinceCode();
             int cityCode = selectedCity.getCityCode();
             String address = "http://guolin.tech/api/china/"
                     + provinceCode + "/" + cityCode;
+            Log.d(TAG, "queryCounties: " + address);
             queryFromServer(address,"county");
         }
     }
 
     public void queryFromServer(String address, final String type) {
         showProgressDialog();
+        Log.d(TAG, "queryFromServer: address = " + address + " ,type = " + type);
         HttpUtil.sendOkHttpRequest(address, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -219,11 +229,11 @@ sqlite>
                 String responseText = response.body().string();
                 boolean result = false;
                 if ("province".equals(type)) {
-                    result = Utility.handProvinceResponse(responseText);
+                    result = Utility.handleProvinceResponse(responseText);
                 } else if ("city".equals(type)) {
                     result = Utility.handleCityResponse(responseText, selectedProvince.getProvinceCode());
                 } else if ("county".equals(type)) {
-                    result = Utility.handleCountryResponse(responseText, selectedCity.getCityCode());
+                    result = Utility.handleCountyResponse(responseText, selectedCity.getCityCode());
                 }
 
                 if (result) {
