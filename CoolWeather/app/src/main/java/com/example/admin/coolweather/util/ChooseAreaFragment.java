@@ -168,15 +168,6 @@ public class ChooseAreaFragment extends Fragment {
             queryFromServer(address,"city");
         }
     }
-/*
-sqlite> .schema
-CREATE TABLE android_metadata (locale TEXT);
-CREATE TABLE table_schema (id integer primary key autoincrement,name text, type integer);
-CREATE TABLE province (id integer primary key autoincrement,provincecode integer, provincename text);
-CREATE TABLE city (id integer primary key autoincrement,citycode integer, cityname text, provinceidinteger);
-CREATE TABLE county (id integer primary key autoincrement,cityid integer, countyname text, weatherid text);
-sqlite>
-* */
 
     private void queryCounties() {
         titleText.setText(selectedCity.getCityName());
@@ -231,9 +222,9 @@ sqlite>
                 if ("province".equals(type)) {
                     result = Utility.handleProvinceResponse(responseText);
                 } else if ("city".equals(type)) {
-                    result = Utility.handleCityResponse(responseText, selectedProvince.getProvinceCode());
+                    result = Utility.handleCityResponse(responseText, selectedProvince.getId());
                 } else if ("county".equals(type)) {
-                    result = Utility.handleCountyResponse(responseText, selectedCity.getCityCode());
+                    result = Utility.handleCountyResponse(responseText, selectedCity.getId());
                 }
 
                 if (result) {
