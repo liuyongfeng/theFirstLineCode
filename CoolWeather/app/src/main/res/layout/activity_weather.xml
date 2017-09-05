@@ -7,6 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     tools:context="com.example.admin.coolweather.WeatherActivity">
+    <ImageView
+        android:id="@+id/bing_pic_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/draw_layout"
         android:layout_width="match_parent"
