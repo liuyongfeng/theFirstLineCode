@@ -3,6 +3,8 @@ package com.example.admin.coolweather;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompatSideChannelService;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.test.PerformanceTestCase;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -35,7 +38,7 @@ public class WeatherActivity extends AppCompatActivity {
     private static final String TAG = "WeatherActivity";
 
     private ScrollView weatherLayout;
-    private SwipeRefreshLayout swipeRefresh;
+    public SwipeRefreshLayout swipeRefresh;
     private TextView titleCity;
     private TextView titleUpdateTime;
     private TextView degreeText;
@@ -46,6 +49,8 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView comfortText;
     private TextView carWashText;
     private TextView sportText;
+    private Button navButton;
+    public DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,9 @@ public class WeatherActivity extends AppCompatActivity {
         initWeather();
         swipeRefresh = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+
+        navButton = (Button)findViewById(R.id.nav_button);
+        drawerLayout = (DrawerLayout)findViewById(R.id.draw_layout);
 
         SharedPreferences preferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
@@ -75,6 +83,13 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 requestWeather(weather_id);
+            }
+        });
+
+        navButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
     }

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.admin.coolweather.MainActivity;
 import com.example.admin.coolweather.R;
 import com.example.admin.coolweather.WeatherActivity;
 import com.example.admin.coolweather.db.City;
@@ -96,10 +98,21 @@ public class ChooseAreaFragment extends Fragment {
                     case LEVEL_COUNTY:
                         /*跳转到天气界面*/
                         String weatherId = countyList.get(position).getWeatherId();//page 534
-                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
-                        intent.putExtra("weather_id",weatherId);
-                        startActivity(intent);
-                        getActivity().finish();
+                        if (getActivity() instanceof MainActivity){
+                                                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                            intent.putExtra("weather_id",weatherId);
+                            startActivity(intent);
+                            Log.d(TAG, "onItemClick: MainActivity");
+                            getActivity().finish();
+
+                        }else if (getActivity() instanceof WeatherActivity){
+                            WeatherActivity activity = (WeatherActivity)getActivity();
+                            activity.drawerLayout.closeDrawers();
+                            activity.swipeRefresh.setRefreshing(true);
+                            activity.requestWeather(weatherId);
+                            Log.d(TAG, "onItemClick: WeatherActivity");
+                        }
+
                         break;
                     default:
                         break;
