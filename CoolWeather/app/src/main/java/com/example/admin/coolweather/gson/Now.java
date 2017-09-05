@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Now {
 
-    @SerializedName("temp")
+    @SerializedName("tmp")
     public String temperature;
 
     @SerializedName("cond")
