@@ -3,6 +3,7 @@ package com.example.admin.coolweather;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompatSideChannelService;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.test.PerformanceTestCase;
@@ -27,11 +28,14 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+import static com.example.admin.coolweather.R.color.colorPrimary;
+
 public class WeatherActivity extends AppCompatActivity {
 
     private static final String TAG = "WeatherActivity";
 
     private ScrollView weatherLayout;
+    private SwipeRefreshLayout swipeRefresh;
     private TextView titleCity;
     private TextView titleUpdateTime;
     private TextView degreeText;
@@ -46,20 +50,33 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final String weather_id;
         setContentView(R.layout.activity_weather);
         //初始化各个控件
         initWeather();
+        swipeRefresh = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+
         SharedPreferences preferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
         String weatherString = preferences.getString("weather",null);
         if (weatherString != null){
             Weather weather = Utility.handleWeatherResponse(weatherString);
             showWeatherInfo(weather);
+            weather_id = weather.basic.weatherId;
         }else{
             String weatherId = getIntent().getStringExtra("weather_id");
             weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(weatherId);
+            weather_id = weatherId;
         }
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestWeather(weather_id);
+            }
+        });
     }
 
     public void requestWeather(final String weatherId){
@@ -76,6 +93,7 @@ public class WeatherActivity extends AppCompatActivity {
                         Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
                     }
                 });
+                swipeRefresh.setRefreshing(false);
             }
 
             @Override
@@ -96,6 +114,7 @@ public class WeatherActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(WeatherActivity.this, "request weather info failed", Toast.LENGTH_SHORT).show();
                         }
+                        swipeRefresh.setRefreshing(false);
                     }
                 });
             }
