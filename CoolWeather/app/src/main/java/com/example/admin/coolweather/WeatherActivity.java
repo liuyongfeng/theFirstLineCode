@@ -60,6 +60,23 @@ public class WeatherActivity extends AppCompatActivity {
     public DrawerLayout drawerLayout;
 
     @Override
+    protected void onResume(){
+        Log.d(TAG, "onResume: ");
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        String weatherString = preferences.getString("weather",null);
+        if (weatherString != null) {
+            //有缓存时直接解析天气数据
+            Log.d(TAG, "onResume: refresh weather use perferences");
+            Weather weather = Utility.handleWeatherResponse(weatherString);
+            showWeatherInfo(weather);
+            mWeatherId = weather.basic.weatherId;
+            loadBingPic();
+        }
+        super.onResume();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
