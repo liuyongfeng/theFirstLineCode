@@ -106,6 +106,7 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     public void requestWeather(final String weatherId){
+        loadBingPic();
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" +
                 weatherId + "&key=bc0418b57b2d4918819d3974ac1285d9";
         Log.d(TAG, "requestWeather: " + weatherUrl);
@@ -146,7 +147,6 @@ public class WeatherActivity extends AppCompatActivity {
                 });
             }
         });
-        loadBingPic();
     }
 
     public void loadBingPic() {
@@ -172,6 +172,7 @@ public class WeatherActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call call, final Response response) throws IOException {
                     final String responseBingPic = response.body().string();
+                    Log.d(TAG, "onResponse: " + responseBingPic);
                     SharedPreferences.Editor editor = PreferenceManager
                             .getDefaultSharedPreferences(WeatherActivity.this).edit();
                     editor.putString("BingPic", responseBingPic);
@@ -179,7 +180,7 @@ public class WeatherActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.d(TAG, "run: bingPic == null, load bingPic");
+                            Log.d(TAG, "run: bingPic == null, load bingPic from internet");
                             Glide.with(WeatherActivity.this).load(responseBingPic).into(imageView);
                         }
                     });

@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.util.AndroidException;
+import android.util.Log;
 
 import com.example.admin.coolweather.gson.Weather;
 import com.example.admin.coolweather.util.HttpUtil;
@@ -21,7 +23,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
 public class AutoUpdateService extends Service {
-
+    private static final String TAG = "AutoUpdateService";
     public AutoUpdateService() {
     }
 
@@ -35,12 +37,14 @@ public class AutoUpdateService extends Service {
     public int onStartCommand(Intent intent,int flags,int startId){
         updateWeather();
         updateBingPic();
-
+        Log.d(TAG, "onStartCommand: " + SystemClock.elapsedRealtime() + "update");
         AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
         Intent i = new Intent(this,AutoUpdateService.class);
         PendingIntent pi = PendingIntent.getService(this,0,i,0);
         manager.cancel(pi);
-        manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR,AlarmManager.INTERVAL_HOUR,pi);
+        long anHour = 1*60*60*1000;
+        manager.set(AlarmManager.ELAPSED_REALTIME,SystemClock.elapsedRealtime()+ anHour,pi);
+        //manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR,AlarmManager.INTERVAL_HOUR,pi);
         return super.onStartCommand(intent,flags,startId);
     }
 
@@ -80,7 +84,8 @@ public class AutoUpdateService extends Service {
 
     /*后台更新背景图片*/
     public void updateBingPic(){
-        String requestBingPic = "http://guolin.tech/api/bing_pic";
+        final String requestBingPic = "http://guolin.tech/api/bing_pic";
+        Log.d(TAG, "updateBingPic: " + requestBingPic);
         HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -90,6 +95,7 @@ public class AutoUpdateService extends Service {
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
             final String responseBingPic = response.body().string();
+                Log.d(TAG, "onResponse: " + requestBingPic);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
